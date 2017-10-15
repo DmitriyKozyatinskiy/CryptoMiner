@@ -5,7 +5,17 @@
   <title></title>
 </head>
 <body>
-  <h1>Hello!</h1>
-  <img src="img/icon-128.png">
+  <div class="hashes">9,7 HASHES/S</div>
+  <button id="stopButton" class="button button-stop">STOP MINING</button>
+  <hr class="line">
+  <h2 class="title">MINER SETTINGS</h2>
+  <label for="siteKeyInput" class="label">Site Key (public):</label>
+  <input id="siteKeyInput" class="input input-large">
+  <label for="threadsInput" class="label"><b>Threads</b> (1 - 4):</label>
+  <input id="threadsInput" class="input input-small">
+  <label for="throttleInput" class="label"><b>Throttle</b> (0 - 100%):</label>
+  <input id="throttleInput" class="input input-small">
+  <span class="percent">%</span>
+  <button id="saveButton" class="button button-save">SAVE SETTINGS</button>
 </body>
 </html>

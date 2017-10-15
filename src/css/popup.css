@@ -1,0 +1,73 @@
+body {
+  width: 270px;
+}
+
+.hashes {
+  text-align: center;
+  color: #778899;
+  font-size: 18px;
+}
+
+.button {
+  display: block;
+  margin: 15px auto;
+  padding: 15px 30px;
+  color: #FFFFFF;
+  font-size: 14px;
+  border: 1px solid #FFFFFF;
+  border-radius: 5px;
+}
+
+.button:hover {
+  border: 1px solid #778899;
+}
+
+.button:focus {
+  outline: none;
+}
+
+.line {
+  height: 1px;
+  border: none;
+  background-color: #778899;
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  font-weight: normal;
+  color: #778899;
+}
+
+.label {
+  width: 150px;
+  margin-top: 10px;
+  display: inline-block;
+  color: #778899;
+}
+
+.percent {
+  color: #778899;
+}
+
+.button-stop {
+  background-color: #D84742;
+}
+
+.button-save {
+  background-color: #45A3D9;
+}
+
+.button-save:hover {
+  background-color: #3F95C7;
+}
+
+.input-large {
+  display: block;
+  width: 250px;
+  margin-top: 10px;
+}
+
+.input-small {
+  width: 40px;
+}

@@ -1,2 +1,2 @@
-import "../css/popup.css";
+import '../css/popup.css';
 
