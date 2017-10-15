@@ -7,6 +7,8 @@ import {
   SAVE_SETTINGS,
   GET_HASHES_PER_SECOND,
   HASH_UPDATE_INTERVAL,
+  ERROR_EVENT,
+  AUTHED_EVENT,
 } from './constants';
 
 const { runtime } = chrome;
@@ -53,6 +55,10 @@ const saveSettings = () => {
   runtime.sendMessage({ type: SAVE_SETTINGS, data });
 };
 
+const showError = () => {
+
+};
+
 runtime.sendMessage({ type: IS_MINING }, (isMining) => {
   if (isMining) {
     enableMining();
@@ -72,6 +78,19 @@ setInterval(function() {
     hashesPerSecondsAmount.innerText = hashes === 0 ? hashes : hashes.toFixed(1);
   });
 }, HASH_UPDATE_INTERVAL);
+
+runtime.onMessage.addListener((request, sender, sendResponse) => {
+  const {type, data} = request;
+  switch (type) {
+    case ERROR_EVENT: {
+      disableMining();
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+});
 
 miningButton.addEventListener('click', () => setMiningStatus());
 saveButton.addEventListener('click', () => saveSettings());

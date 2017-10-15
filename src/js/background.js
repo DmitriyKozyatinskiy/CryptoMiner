@@ -1,13 +1,14 @@
 import './lib/coinhive';
 import {
   DEFAULT_SETTINGS,
-
   IS_MINING,
   ENABLE_MINING,
   DISABLE_MINING,
   GET_SETTINGS,
   SAVE_SETTINGS,
   GET_HASHES_PER_SECOND,
+  ERROR_EVENT,
+  AUTHED_EVENT,
 } from './constants';
 
 const { storage, runtime } = chrome;
@@ -88,6 +89,12 @@ const setEvents = () => {
       }
     }
     return true;
+  });
+
+  miner.on('error', (params) => {
+    console.log('PARAMS: ', params);
+    disableMining();
+    runtime.sendMessage({ type: ERROR_EVENT });
   });
 };
 
