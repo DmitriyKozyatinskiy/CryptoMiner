@@ -105,3 +105,15 @@ body {
 .input-small {
   width: 40px;
 }
+
+.success {
+  text-align: center;
+  color: #9ACD32;
+  margin: 10px 0 -10px 0;
+}
+
+.error {
+  text-align: center;
+  color: #D84742;
+  margin: 10px 0 -10px 0;
+}
