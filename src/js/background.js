@@ -51,7 +51,7 @@ const saveSettings = ({ settings }) => {
 };
 
 const getSettings = () => {
-  return new Promise((resolve) => local.get('settings', ({ settings }) => resolve(settings || DEFAULT_SETTINGS)));
+  return new Promise((resolve) => chrome.storage.local.get('settings', ({ settings }) => resolve(settings || DEFAULT_SETTINGS)));
 };
 
 const setEvents = () => {
