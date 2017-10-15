@@ -54,6 +54,10 @@ body {
   background-color: #D84742;
 }
 
+.button-run {
+  background-color: #9ACD32;
+}
+
 .button-save {
   background-color: #45A3D9;
 }
@@ -65,7 +69,7 @@ body {
 .input-large {
   display: block;
   width: 250px;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .input-small {
