@@ -69,9 +69,11 @@ body {
 .tooltip {
   display: none;
   position: absolute;
+  margin-top: -50px;
   background-color: red;
-  height: 20px;
-  width: 100px;
+  height: 40px;
+  width: 130px;
+  font-size: 11px;
 }
 
 .percent {
@@ -96,10 +98,22 @@ body {
 
 .input-large {
   display: block;
-  width: 265px;
+  width: 260px;
   margin-top: 5px;
 }
 
 .input-small {
   width: 40px;
+}
+
+.success {
+  text-align: center;
+  color: #9ACD32;
+  margin: 10px 0 -10px 0;
+}
+
+.error {
+  text-align: center;
+  color: #D84742;
+  margin: 10px 0 -10px 0;
 }
