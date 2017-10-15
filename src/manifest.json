@@ -1,16 +1,15 @@
 {
-  "name": "Chrome Extension Webpack",
+  "name": "CryptoMiner",
+  "manifest_version": 2,
   "options_page": "options.html",
   "background": {
-    "page": "background.html"
+    "scripts": ["background.bundle.js"]
   },
   "browser_action": {
-    "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
+    "default_popup": "popup.html"
   },
-  "icons": {
-    "128": "icon-128.png"
-  },
-  "manifest_version": 2,
+  "permissions": [
+    "storage"
+  ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
