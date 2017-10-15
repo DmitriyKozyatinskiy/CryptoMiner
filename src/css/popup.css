@@ -20,6 +20,7 @@ body {
 
 .button:hover {
   border: 1px solid #778899;
+  cursor: pointer;
 }
 
 .button:focus {
@@ -40,10 +41,37 @@ body {
 }
 
 .label {
-  width: 150px;
+  width: 120px;
   margin-top: 10px;
   display: inline-block;
   color: #778899;
+  font-size: 13px;
+}
+
+.input {
+  padding: 3px;
+}
+
+.tooltip-wrapper {
+  display: inline-block;
+  width: 10px;
+  margin-right: 5px;
+  border: 1px solid #778899;
+  border-radius: 3px;
+  font-size: 9px;
+  text-align: center;
+}
+
+.tooltip-wrapper:hover {
+  cursor: pointer;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  background-color: red;
+  height: 20px;
+  width: 100px;
 }
 
 .percent {
@@ -68,7 +96,7 @@ body {
 
 .input-large {
   display: block;
-  width: 250px;
+  width: 265px;
   margin-top: 5px;
 }
 
