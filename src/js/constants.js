@@ -11,4 +11,7 @@ export const GET_SETTINGS = 'GET_SETTINGS';
 export const SAVE_SETTINGS = 'SAVE_SETTINGS';
 export const GET_HASHES_PER_SECOND = 'GET_HASHES_PER_SECOND';
 
+export const ERROR_EVENT = 'ERROR_EVENT';
+export const AUTHED_EVENT = 'AUTHED_EVENT';
+
 export const HASH_UPDATE_INTERVAL = 1000;
