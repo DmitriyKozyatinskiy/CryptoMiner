@@ -3,6 +3,7 @@ body {
 }
 
 .hashes {
+  margin-top: 10px;
   text-align: center;
   color: #778899;
   font-size: 18px;
@@ -20,7 +21,7 @@ body {
 
 .button:hover {
   cursor: pointer;
-  box-shadow: 0 0 5px rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px #778899;
 }
 
 .button:focus {
@@ -101,11 +102,11 @@ body {
 }
 
 .button-save {
-  background-color: #45A3D9;
+  background-color: #0590dd;
 }
 
 .button-save:hover {
-  background-color: #3F95C7;
+  background-color: #056AB7;
 }
 
 .input-large {
