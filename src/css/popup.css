@@ -14,13 +14,13 @@ body {
   padding: 15px 30px;
   color: #FFFFFF;
   font-size: 14px;
-  border: 1px solid #FFFFFF;
+  border: none;
   border-radius: 5px;
 }
 
 .button:hover {
-  border: 1px solid #778899;
   cursor: pointer;
+  box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
 .button:focus {
@@ -49,7 +49,19 @@ body {
 }
 
 .input {
-  padding: 3px;
+  padding: 5px;
+  border: 1px solid #778899;
+  border-radius: 4px;
+}
+
+.input-error {
+  box-shadow: 0 0 5px #D84742;
+  border: 1px solid #D84742;
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 5px #778899;
 }
 
 .tooltip-wrapper {
