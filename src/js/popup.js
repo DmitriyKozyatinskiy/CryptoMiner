@@ -62,7 +62,8 @@ const saveSettings = () => {
   const data = {
     settings: { siteKey, threads, throttle },
   };
-  successMessage.classList.add('hidden');
+  errorMessage.classList.add('hidden');
+  siteKeyInput.classList.remove('input-error');
   runtime.sendMessage({ type: SAVE_SETTINGS, data }, () => {
     successMessage.classList.remove('hidden');
     window.setTimeout(() => {
@@ -96,11 +97,14 @@ runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (type) {
     case ERROR_EVENT: {
       disableMining();
+      successMessage.classList.add('hidden');
       errorMessage.classList.remove('hidden');
+      siteKeyInput.classList.add('input-error');
       break;
     }
     case AUTHED_EVENT: {
       errorMessage.classList.add('hidden');
+      siteKeyInput.classList.remove('input-error');
       break;
     }
     default: {
@@ -115,7 +119,7 @@ threadsInput.addEventListener('change', () => {
   const value = threadsInput.value;
   if (value > MAX_THREADS) {
     threadsInput.value = MAX_THREADS;
-  } else if (value < MIN_THREADS) {
+  } else if (value < MIN_THREADS || !value) {
     threadsInput.value = MIN_THREADS;
   }
 });
@@ -123,7 +127,7 @@ throttleInput.addEventListener('change', () => {
   const value = throttleInput.value;
   if (value > MAX_THROTTLE) {
     throttleInput.value = MAX_THROTTLE;
-  } else if (value < MIN_THROTTLE) {
+  } else if (value < MIN_THROTTLE || !value) {
     throttleInput.value = MIN_THROTTLE;
   }
 });
