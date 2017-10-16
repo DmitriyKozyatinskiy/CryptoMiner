@@ -3,6 +3,7 @@ body {
 }
 
 .hashes {
+  margin-top: 10px;
   text-align: center;
   color: #778899;
   font-size: 18px;
