@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "CryptoMiner Chrome extension",
   "scripts": {
-    "build": "node utils/build.js",
+    "build": "node utils/build.js --define process.env.NODE_ENV=\"production\"",
     "start": "node utils/webserver.js"
   },
   "devDependencies": {

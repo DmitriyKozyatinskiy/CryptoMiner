@@ -16,6 +16,56 @@ if (fileSystem.existsSync(secretsPath)) {
   alias["secrets"] = secretsPath;
 }
 
+var plugins = [
+  // expose and write the allowed env vars on the compiled bundle
+  new webpack.DefinePlugin({
+    "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV)
+  }),
+  new HtmlWebpackPlugin({
+    template: path.join(__dirname, "src", "popup.html"),
+    filename: "popup.html",
+    chunks: ["popup"],
+    minify: {
+      removeComments: true,
+      collapseWhitespace: true,
+      removeRedundantAttributes: true,
+      useShortDoctype: true,
+      removeEmptyAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      keepClosingSlash: true,
+      minifyJS: true,
+      minifyCSS: true,
+      minifyURLs: true,
+    },
+  }),
+  // new HtmlWebpackPlugin({
+  //   template: path.join(__dirname, "src", "options.html"),
+  //   filename: "options.html",
+  //   chunks: ["options"]
+  // }),
+  // new HtmlWebpackPlugin({
+  //   template: path.join(__dirname, "src", "background.html"),
+  //   filename: "background.html",
+  //   chunks: ["background"]
+  // }),
+  new WriteFilePlugin()
+];
+
+productionPlugins = [
+  new webpack.optimize.DedupePlugin(),
+  new webpack.optimize.OccurrenceOrderPlugin(),
+  new webpack.optimize.UglifyJsPlugin({
+    mangle: true,
+    compress: {
+      warnings: false
+    }
+  })
+];
+
+if (process.env.NODE_ENV === "production") {
+  plugins = plugins.concat(productionPlugins);
+}
+
 var options = {
   entry: {
     popup: path.join(__dirname, "src", "js", "popup.js"),
@@ -51,28 +101,7 @@ var options = {
   resolve: {
     alias: alias
   },
-  plugins: [
-    // expose and write the allowed env vars on the compiled bundle
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV)
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(__dirname, "src", "popup.html"),
-      filename: "popup.html",
-      chunks: ["popup"]
-    }),
-    // new HtmlWebpackPlugin({
-    //   template: path.join(__dirname, "src", "options.html"),
-    //   filename: "options.html",
-    //   chunks: ["options"]
-    // }),
-    // new HtmlWebpackPlugin({
-    //   template: path.join(__dirname, "src", "background.html"),
-    //   filename: "background.html",
-    //   chunks: ["background"]
-    // }),
-    new WriteFilePlugin()
-  ]
+  plugins: plugins,
 };
 
 if (env.NODE_ENV === "development") {
