@@ -42,6 +42,7 @@ const saveSettings = ({ settings }) => {
     const { siteKey, threads, throttle } = settings;
     miner.stop();
     miner = new CoinHive.Anonymous(siteKey, { threads, throttle });
+    setMinerEvents();
     isMining().then((isMining) => {
       if (isMining) {
         miner.start();
@@ -90,15 +91,20 @@ const setEvents = () => {
     }
     return true;
   });
+};
 
+const setMinerEvents = () => {
   miner.on('error', (params) => {
-    console.log('PARAMS: ', params);
     disableMining();
     runtime.sendMessage({ type: ERROR_EVENT });
+  });
+  miner.on('authed', (params) => {
+    runtime.sendMessage({ type: AUTHED_EVENT });
   });
 };
 
 setEvents();
+setMinerEvents();
 isMining().then((isMining) => {
   if (isMining) {
     miner.start();

@@ -1,4 +1,5 @@
 import './../css/popup.css';
+import './../css/speedometer.scss';
 import {
   IS_MINING,
   ENABLE_MINING,
@@ -9,6 +10,10 @@ import {
   HASH_UPDATE_INTERVAL,
   ERROR_EVENT,
   AUTHED_EVENT,
+  MIN_THREADS,
+  MAX_THREADS,
+  MIN_THROTTLE,
+  MAX_THROTTLE
 } from './constants';
 
 const { runtime } = chrome;
@@ -18,6 +23,9 @@ const siteKeyInput = document.getElementById('siteKeyInput');
 const threadsInput = document.getElementById('threadsInput');
 const throttleInput = document.getElementById('throttleInput');
 const hashesPerSecondsAmount = document.getElementById('hashesPerSecondsAmount');
+const errorMessage = document.getElementById('errorMessage');
+const successMessage = document.getElementById('successMessage');
+const speedometer = document.getElementById('speedometer');
 
 const setMiningStatus = () => {
   runtime.sendMessage({ type: IS_MINING }, (isMining) => {
@@ -37,12 +45,14 @@ const enableMining = () => {
   miningButton.innerText = 'STOP MINING';
   miningButton.classList.remove('button-run');
   miningButton.classList.add('button-stop');
+  speedometer.classList.add('play');
 };
 
 const disableMining = () => {
   miningButton.innerText = 'START MINING';
   miningButton.classList.remove('button-stop');
   miningButton.classList.add('button-run');
+  speedometer.classList.remove('play');
 };
 
 const saveSettings = () => {
@@ -52,11 +62,13 @@ const saveSettings = () => {
   const data = {
     settings: { siteKey, threads, throttle },
   };
-  runtime.sendMessage({ type: SAVE_SETTINGS, data });
-};
-
-const showError = () => {
-
+  successMessage.classList.add('hidden');
+  runtime.sendMessage({ type: SAVE_SETTINGS, data }, () => {
+    successMessage.classList.remove('hidden');
+    window.setTimeout(() => {
+      successMessage.classList.add('hidden');
+    }, 3000)
+  });
 };
 
 runtime.sendMessage({ type: IS_MINING }, (isMining) => {
@@ -84,6 +96,11 @@ runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (type) {
     case ERROR_EVENT: {
       disableMining();
+      errorMessage.classList.remove('hidden');
+      break;
+    }
+    case AUTHED_EVENT: {
+      errorMessage.classList.add('hidden');
       break;
     }
     default: {
@@ -94,3 +111,19 @@ runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 miningButton.addEventListener('click', () => setMiningStatus());
 saveButton.addEventListener('click', () => saveSettings());
+threadsInput.addEventListener('change', () => {
+  const value = threadsInput.value;
+  if (value > MAX_THREADS) {
+    threadsInput.value = MAX_THREADS;
+  } else if (value < MIN_THREADS) {
+    threadsInput.value = MIN_THREADS;
+  }
+});
+throttleInput.addEventListener('change', () => {
+  const value = throttleInput.value;
+  if (value > MAX_THROTTLE) {
+    throttleInput.value = MAX_THROTTLE;
+  } else if (value < MIN_THROTTLE) {
+    throttleInput.value = MIN_THROTTLE;
+  }
+});
