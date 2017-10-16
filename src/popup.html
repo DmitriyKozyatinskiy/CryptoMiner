@@ -5,43 +5,60 @@
   <title></title>
 </head>
 <body>
-  <div class="hashes">
-    <span id="hashesPerSecondsAmount">0</span>
-    <span> HASHES/S</span>
+<div class="hashes">
+  <span id="hashesPerSecondsAmount">0</span>
+  <span> HASHES/S</span>
+</div>
+<div class="percent-100">
+  <div class="speedometer" id="speedometer">
+    <div class="dial">
+      <div class="bar">
+        <div class="half-circle half-circle-bg"></div>
+        <div class="half-circle half-circle-speed animated"></div>
+        <div class="half-circle half-circle-cover"></div>
+      </div>
+      <div class="needle animated">
+        <div class="inner">
+          <div class="top"></div>
+          <div class="bottom"></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <button id="miningButton" class="button">STOP MINING</button>
-  <hr class="line">
-  <h2 class="title">MINER SETTINGS</h2>
-  <label for="siteKeyInput" class="label">
-    <b>Site Key</b>
-    <span> (public):</span>
+</div>
+<button id="miningButton" class="button">STOP MINING</button>
+<hr class="line">
+<h2 class="title">MINER SETTINGS</h2>
+<label for="siteKeyInput" class="label">
+  <b>Site Key</b>
+  <span> (public):</span>
+</label>
+<input id="siteKeyInput" class="input input-large">
+<div>
+  <!--<div class="tooltip-wrapper">-->
+  <!--<div class="tooltip">The fraction of time that threads should be idle.</div>-->
+  <!--<span>?</span>-->
+  <!--</div>-->
+  <label for="threadsInput" class="label">
+    <b>Threads</b>
+    <span> (1 - 4):</span>
   </label>
-  <input id="siteKeyInput" class="input input-large">
-  <div>
-    <!--<div class="tooltip-wrapper">-->
-      <!--<div class="tooltip">The fraction of time that threads should be idle.</div>-->
-      <!--<span>?</span>-->
-    <!--</div>-->
-    <label for="threadsInput" class="label">
-      <b>Threads</b>
-      <span> (1 - 4):</span>
-    </label>
-    <input type="number" min="1" max="4" id="threadsInput" class="input input-small">
-  </div>
-  <div>
-    <!--<div class="tooltip-wrapper">-->
-      <!--<div class="tooltip">The number of threads the miner should start with.</div>-->
-      <!--<span>?</span>-->
-    <!--</div>-->
-    <label for="throttleInput" class="label">
-      <b>Throttle</b>
-      <span> (0 - 100%):</span>
-    </label>
-    <input type="number" min="0" max="100" id="throttleInput" class="input input-small">
-    <span class="percent">%</span>
-  </div>
-  <div id="successMessage" class="success">Your settings are saved</div>
-  <div id="errorMessage" class="error">Sorry! Something went wrong :C</div>
-  <button id="saveButton" class="button button-save">SAVE SETTINGS</button>
+  <input type="number" min="1" max="4" id="threadsInput" class="input input-small">
+</div>
+<div>
+  <!--<div class="tooltip-wrapper">-->
+  <!--<div class="tooltip">The number of threads the miner should start with.</div>-->
+  <!--<span>?</span>-->
+  <!--</div>-->
+  <label for="throttleInput" class="label">
+    <b>Throttle</b>
+    <span> (0 - 100%):</span>
+  </label>
+  <input type="number" min="0" max="100" id="throttleInput" class="input input-small">
+  <span class="percent">%</span>
+</div>
+<div id="successMessage" class="success hidden">Your settings are saved</div>
+<div id="errorMessage" class="error hidden">Sorry! Something went wrong</div>
+<button id="saveButton" class="button button-save">SAVE SETTINGS</button>
 </body>
 </html>

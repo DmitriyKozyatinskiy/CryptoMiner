@@ -1,0 +1,317 @@
+@function px-to-em($pixels, $base: 16) {
+  @return ($pixels / $base) * 1em;
+}
+
+$needle-height: 112px;
+$needle-top-height: 106px;
+$needle-width: 12px;
+$needle-color: #666;
+$needle-speed: 2s;
+$needle-easing: ease-out;
+$circle-radius: 95px;
+$circle-diameter: $circle-radius * 2;
+$circle-color-bg: #f3f6f9;
+$circle-color-bg: #e0f3fc;
+$circle-color-speed: #0590dd;
+$circle-color-cover: #fff;
+$dial-stroke-width: 30px;
+$start-pos: -180deg;
+$end-pos: $start-pos + 180deg;
+$end-pos-100: $end-pos;
+$end-pos-66: $start-pos + 180deg * 0.666;
+$end-pos-60: $start-pos + 180deg * 0.6;
+$end-pos-40: $start-pos + 180deg * 0.4;
+$end-pos-33: $start-pos + 180deg * 0.333;
+$end-pos-30: $start-pos + 180deg * 0.3;
+$end-pos-16: $start-pos + 180deg * 0.166;
+
+// List of possible percentages
+$percentages: 100, 66, 60, 40, 33, 30, 16;
+
+// List of possible ending positions (rotations)
+$end-positions: $end-pos-100, $end-pos-66, $end-pos-60, $end-pos-40, $end-pos-33, $end-pos-30, $end-pos-16;
+
+@mixin animation {
+  transform-origin: bottom center;
+  animation-duration: $needle-speed;
+  animation-iteration-count: 1;
+  animation-timing-function: $needle-easing;
+  animation-fill-mode: forwards;
+}
+
+@mixin adjust-size($factor: 90) {
+  $factor: $factor * 0.01;
+  width: ($circle-diameter + 20px) * $factor;
+  height: ($circle-radius + 25px) * $factor;
+  position: relative;
+  margin: 0 auto;
+
+  &::after {
+    height: 10px * $factor;
+    width: ($circle-diameter - $dial-stroke-width * 2) * $factor;
+  }
+
+
+  .dial {
+    padding-top: 20px * $factor;
+  }
+
+  .bar {
+    position: relative;
+    overflow: hidden;
+    height: $circle-radius * $factor;
+  }
+
+  .half-circle {
+    height: $circle-radius * $factor;
+    width: $circle-diameter * $factor;
+    border-radius: ($circle-diameter * $factor) ($circle-diameter * $factor) 0 0;
+    transform-origin: bottom center;
+  }
+
+  .half-circle-cover {
+    height: ($circle-radius - $dial-stroke-width) * $factor;
+    width: ($circle-diameter - $dial-stroke-width * 2) * $factor;
+    border-radius: ($circle-diameter * $factor) ($circle-diameter * $factor) 0 0;
+  }
+
+  .needle {
+    width: $needle-width * $factor;
+
+    .inner {
+      height: $needle-height * $factor;
+      width: $needle-width * $factor;
+    }
+
+    // upper triangle
+    .top {}
+
+    // lower half circle
+    .bottom {}
+  }
+}
+
+@mixin needle-svg {
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMSBUaW55Ly9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLXRpbnkuZHRkIj48c3ZnIHZlcnNpb249IjEuMSIgYmFzZVByb2ZpbGU9InRpbnkiIGlkPSJMYXllcl8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCIgd2lkdGg9IjEycHgiIGhlaWdodD0iMTEzcHgiIHZpZXdCb3g9IjAgMCAxMiAxMTMiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxwYXRoIGZpbGw9IiM2NzY3NjciIGQ9Ik0wLjA2NywxMDYuMzQ0Yy0wLjAxNiwwLjEzNS0wLjAyNCwwLjU0My0wLjAzMiwwLjY4MWwtMC4wMTIsMC40MTFoMC4wMDVjLTAuMDAxLDAtMC4wMTEtMC4xNDYtMC4wMTEtMC4wODFjMC4wMDYsMy4xOSwyLjY4OSw1LjYzNSw1Ljk5NSw1LjYyOWMzLjMwNC0wLjAwNyw1Ljk3OC0yLjY2Niw1Ljk3MS01Ljg1NmMtMC4wMDEtMC40MTUtMC4wNS0wLjg1My0wLjEzNi0xLjI0Mkw2LjAxMiwwLjEyNEwwLjA2NywxMDYuMzQ0eiIvPjwvc3ZnPg==);
+  background-size: 100%;
+
+}
+.wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.speedometer {
+  // We need to hide overflow on the container or else the rotating 'needle' boundary box will create scrollbars when animated
+  overflow: hidden;
+
+  // Add some extra space around the container so that needle isn't cut off while animating
+  width: $circle-diameter + 20px;
+  height: $circle-radius + 25px;
+  position: relative;
+  margin: 20px auto;
+
+  // In some browsers there is a gap between the white half circle that is covering the blue bg circle, and the bottom of the blue bg circle; add a pseudo element to cover it
+  &::after {
+    background-color: #fff;
+    height: 10px;
+    width: 130px;
+    margin: 0 auto;
+    left: 0;
+    bottom: 0;
+    content: '';
+    position: absolute;
+    border-radius: 1px;
+    z-index: 40;
+    right: 0;
+  }
+
+  // contains progress bar and needle
+  .dial {
+    padding-top: 20px;
+    overflow: hidden;
+  }
+
+  // needle is a css triangle above a css half-circle
+  .needle {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2px;
+    width: $needle-width;
+    margin: 0 auto;
+    z-index: 50;
+
+    .inner {
+      // CSS-only needle breaks up on scaling, and in different browsers
+      @include needle-svg();
+      height: $needle-height;
+      width: $needle-width;
+      position: relative;
+      transform: rotate(90deg);
+      transform-origin: bottom center;
+    }
+
+    .top,
+    .bottom {
+      display: none;
+      position: absolute;
+    }
+
+    // upper triangle
+    .top {
+      border-color: transparent;
+    }
+
+    // lower half circle
+    .bottom {
+      background-color: transparent;
+    }
+  }
+
+  // container/clipping mask for half circles
+  .bar {
+    position: relative;
+    overflow: hidden;
+    height: $circle-radius;
+  }
+
+  .half-circle {
+    height: $circle-radius;
+    width: $circle-diameter;
+    border-radius: $circle-diameter $circle-diameter 0 0;
+    margin: 0 auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    transform-origin: bottom center;
+  }
+
+  // Speed indicator/progress bar background
+  .half-circle-bg {
+    background-color: $circle-color-bg;
+    z-index: 10;
+  }
+
+  // Speed indicator/progress bar
+  .half-circle-speed {
+    background-color: $circle-color-speed;
+    z-index: 20;
+  }
+
+  // Speed indicator/progress bar cover, makes the half circle appear as as a circular bar instead
+  .half-circle-cover {
+    background-color: $circle-color-cover;
+    height: $circle-radius - $dial-stroke-width;
+    width: $circle-diameter - $dial-stroke-width * 2;
+    border-radius: $circle-diameter $circle-diameter 0 0;
+    background: $circle-color-cover;
+    margin: 0 auto;
+    top: auto;
+    bottom: 0;
+    z-index: 30;
+
+  }
+
+  .animated {
+    transform: rotate($start-pos);
+
+    @include animation;
+  }
+
+  // Small versions
+  [class*='sm'] & {
+    // 62% is the magic number that gets us the closest to a tasrget 118px width
+    @include adjust-size(62);
+  }
+}
+
+// Testing
+.scaled-90 .speedometer {
+  @include adjust-size(90);
+}
+.scaled-80 .speedometer {
+  @include adjust-size(80);
+}
+.scaled-70 .speedometer {
+  @include adjust-size(70);
+}
+.scaled-60 .speedometer {
+  @include adjust-size(60);
+}
+.scaled-50 .speedometer {
+  @include adjust-size(50);
+}
+// Iterate over each possible percentage the progress meter will indicate
+@for $i from 1 through length($percentages) {
+  // Grab our percent from the list, according to the loop index
+  $percent: #{nth($percentages, $i)};
+
+  // Add a class name that corresponds to the percentage number
+  .percent-#{$percent} .speedometer.play,
+    // Small versions
+  .percent-#{$percent}-sm .speedometer.play {
+    // 'Elements that animate
+    .animated {
+      // Pull the name of the correct animation based on index
+      animation-name: to-#{nth($percentages, $i)};
+    }
+  }
+
+  // Class names for satic versions
+  .percent-#{$percent}-static,
+    // Small versions
+  .percent-#{$percent}-static-sm {
+    .animated {
+      animation: none;
+
+      // Pull the correct ending position based on index
+      transform: rotate(#{nth($end-positions, $i)});
+    }
+  }
+}
+
+// Generate keyframes
+@for $i from 1 through length($percentages) {
+  $percent: #{nth($percentages, $i)};
+
+  @keyframes to-#{$percent} {
+    0% {
+      transform: rotate($start-pos);
+    }
+
+    // translate3d for FF rendering bug
+    100% {
+      transform: rotate(#{nth($end-positions, $i)});
+    }
+  }
+}
+
+@media ( max-width: px-to-em(1150) ) {
+  .speedometer {
+    @include adjust-size(90);
+  }
+
+}
+@media ( max-width: px-to-em(1025) ) {
+  .speedometer {
+    @include adjust-size(80);
+  }
+}
+@media ( max-width: px-to-em(900) ) {
+  .speedometer {
+    @include adjust-size(70);
+  }
+}
+@media ( max-width: px-to-em(825) ) {
+  .speedometer {
+    @include adjust-size(60);
+  }
+}
+
+@media (max-width: 48em) {
+
+}

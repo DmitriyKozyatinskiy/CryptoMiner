@@ -33,6 +33,9 @@ var options = {
         loader: "style-loader!css-loader",
         exclude: /node_modules/
       },
+      { test: /\.scss$/,
+        loader: "style-loader!css-loader!sass-loader"
+      },
       {
         test: new RegExp('\.(' + fileExtensions.join('|') + ')$'),
         loader: "file-loader?name=[name].[ext]",

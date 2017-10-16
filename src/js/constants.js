@@ -14,4 +14,9 @@ export const GET_HASHES_PER_SECOND = 'GET_HASHES_PER_SECOND';
 export const ERROR_EVENT = 'ERROR_EVENT';
 export const AUTHED_EVENT = 'AUTHED_EVENT';
 
+export const MIN_THREADS = 1;
+export const MAX_THREADS = 4;
+export const MIN_THROTTLE = 0;
+export const MAX_THROTTLE = 100;
+
 export const HASH_UPDATE_INTERVAL = 1000;
