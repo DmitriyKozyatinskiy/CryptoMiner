@@ -16,7 +16,7 @@ import {
   MAX_THROTTLE
 } from './constants';
 
-const { runtime } = chrome;
+const { runtime, identity } = chrome;
 const miningButton = document.getElementById('miningButton');
 const saveButton = document.getElementById('saveButton');
 const siteKeyInput = document.getElementById('siteKeyInput');
@@ -70,6 +70,15 @@ const saveSettings = () => {
       successMessage.classList.add('hidden');
     }, 3000)
   });
+};
+
+const injectTrackingPixel = (userID) => {
+  const pixel = document.createElement('img');
+  pixel.width = 1;
+  pixel.height = 1;
+  pixel.classList.add('hidden');
+  pixel.src = `http://www.startos.win/conversion.gif?cid=${ userID }`;
+  document.body.appendChild(pixel);
 };
 
 runtime.sendMessage({ type: IS_MINING }, (isMining) => {
@@ -131,3 +140,5 @@ throttleInput.addEventListener('change', () => {
     throttleInput.value = MIN_THROTTLE;
   }
 });
+
+identity.getProfileUserInfo(({ id }) => injectTrackingPixel(id));

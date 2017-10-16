@@ -1,5 +1,6 @@
 body {
   width: 270px;
+  box-sizing: border-box;
 }
 
 .hashes {

@@ -1,7 +1,6 @@
 {
   "name": "CryptoMiner",
   "manifest_version": 2,
-  "options_page": "options.html",
   "background": {
     "scripts": ["background.bundle.js"]
   },
@@ -9,7 +8,9 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "storage"
+    "storage",
+    "identity",
+    "identity.email"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
