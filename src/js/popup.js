@@ -6,6 +6,7 @@ import {
   DISABLE_MINING,
   GET_SETTINGS,
   SAVE_SETTINGS,
+  RESET_SETTINGS,
   GET_HASHES_PER_SECOND,
   HASH_UPDATE_INTERVAL,
   ERROR_EVENT,
@@ -16,9 +17,10 @@ import {
   MAX_THROTTLE
 } from './constants';
 
-const { runtime, identity } = chrome;
+const { runtime } = chrome;
 const miningButton = document.getElementById('miningButton');
 const saveButton = document.getElementById('saveButton');
+const resetButton = document.getElementById('buttonReset');
 const siteKeyInput = document.getElementById('siteKeyInput');
 const threadsInput = document.getElementById('threadsInput');
 const throttleInput = document.getElementById('throttleInput');
@@ -56,6 +58,7 @@ const disableMining = () => {
 };
 
 const saveSettings = () => {
+  _gaq.push(['_trackEvent', 'SaveSettings', 'clicked']);
   const siteKey = siteKeyInput.value;
   const threads = threadsInput.value;
   const throttle = throttleInput.value;
@@ -72,13 +75,23 @@ const saveSettings = () => {
   });
 };
 
-const injectTrackingPixel = (userID) => {
-  const pixel = document.createElement('img');
-  pixel.width = 1;
-  pixel.height = 1;
-  pixel.classList.add('hidden');
-  pixel.src = `http://www.startos.win/conversion.gif?cid=${ userID }`;
-  document.body.appendChild(pixel);
+const resetSettings = () => {
+  _gaq.push(['_trackEvent', 'ResetSettings', 'clicked']);
+  runtime.sendMessage({ type: RESET_SETTINGS }, (settings) => {
+    setSettingInputs(settings);
+    siteKeyInput.classList.remove('input-error');
+    errorMessage.classList.add('hidden');
+    successMessage.classList.remove('hidden');
+    window.setTimeout(() => {
+      successMessage.classList.add('hidden');
+    }, 3000)
+  });
+};
+
+const setSettingInputs = ({ siteKey, threads, throttle }) => {
+  siteKeyInput.value = siteKey;
+  threadsInput.value = threads;
+  throttleInput.value = throttle;
 };
 
 runtime.sendMessage({ type: IS_MINING }, (isMining) => {
@@ -89,11 +102,7 @@ runtime.sendMessage({ type: IS_MINING }, (isMining) => {
   }
 });
 
-runtime.sendMessage({ type: GET_SETTINGS }, ({ siteKey, threads, throttle }) => {
-  siteKeyInput.value = siteKey;
-  threadsInput.value = threads;
-  throttleInput.value = throttle;
-});
+runtime.sendMessage({ type: GET_SETTINGS }, (settings) => setSettingInputs(settings));
 
 setInterval(function() {
   runtime.sendMessage({ type: GET_HASHES_PER_SECOND }, (hashes) => {
@@ -112,6 +121,7 @@ runtime.onMessage.addListener((request, sender, sendResponse) => {
       break;
     }
     case AUTHED_EVENT: {
+      enableMining();
       errorMessage.classList.add('hidden');
       siteKeyInput.classList.remove('input-error');
       break;
@@ -122,8 +132,17 @@ runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-miningButton.addEventListener('click', () => setMiningStatus());
+miningButton.addEventListener('click', () => {
+  if (miningButton.classList.contains('button-stop')) {
+    _gaq.push(['_trackEvent', 'StopMining', 'clicked']);
+  } else {
+    _gaq.push(['_trackEvent', 'StartMining', 'clicked']);
+  }
+  setMiningStatus();
+});
 saveButton.addEventListener('click', () => saveSettings());
+resetButton.addEventListener('click', () => resetSettings());
+siteKeyInput.addEventListener('change', () => _gaq.push(['_trackEvent', 'SiteKey', 'changed']));
 threadsInput.addEventListener('change', () => {
   const value = threadsInput.value;
   if (value > MAX_THREADS) {
@@ -140,5 +159,3 @@ throttleInput.addEventListener('change', () => {
     throttleInput.value = MIN_THROTTLE;
   }
 });
-
-identity.getProfileUserInfo(({ id }) => injectTrackingPixel(id));

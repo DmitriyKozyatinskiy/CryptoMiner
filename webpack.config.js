@@ -1,9 +1,10 @@
 var webpack = require("webpack"),
-    path = require("path"),
-    fileSystem = require("fs"),
-    env = require("./utils/env"),
-    HtmlWebpackPlugin = require("html-webpack-plugin"),
-    WriteFilePlugin = require("write-file-webpack-plugin");
+  path = require("path"),
+  fileSystem = require("fs"),
+  env = require("./utils/env"),
+  HtmlWebpackPlugin = require("html-webpack-plugin"),
+  WriteFilePlugin = require("write-file-webpack-plugin"),
+  CopyWebpackPlugin = require('copy-webpack-plugin');
 
 // load the secrets
 var alias = {};
@@ -38,6 +39,10 @@ var plugins = [
       minifyURLs: true,
     },
   }),
+  new CopyWebpackPlugin([{
+    from: path.join(__dirname, "src", "js", "analytics.js"),
+    to: path.join(__dirname, "build")
+  }]),
   // new HtmlWebpackPlugin({
   //   template: path.join(__dirname, "src", "options.html"),
   //   filename: "options.html",
@@ -83,7 +88,8 @@ var options = {
         loader: "style-loader!css-loader",
         exclude: /node_modules/
       },
-      { test: /\.scss$/,
+      {
+        test: /\.scss$/,
         loader: "style-loader!css-loader!sass-loader"
       },
       {

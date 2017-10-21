@@ -110,6 +110,20 @@ body {
   background-color: #056AB7;
 }
 
+.button-reset {
+  display: block;
+  width: 100%;
+  margin-top: -8px;
+  font-size: 15px;
+  text-align: center;
+  text-decoration: none;
+  color: #778899;
+}
+
+.button-reset:hover {
+  color: black;
+}
+
 .input-large {
   display: block;
   width: 260px;

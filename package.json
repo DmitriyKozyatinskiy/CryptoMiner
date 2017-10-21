@@ -1,12 +1,13 @@
 {
-  "name": "CryptoMiner",
-  "version": "1.0.0",
-  "description": "CryptoMiner Chrome extension",
+  "name": "MediaMiner",
+  "version": "1.0.2",
+  "description": "Media Miner Chrome extension",
   "scripts": {
     "build": "node utils/build.js --define process.env.NODE_ENV=\"production\"",
     "start": "node utils/webserver.js"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^4.2.0",
     "css-loader": "^0.25.0",
     "file-loader": "^0.11.2",
     "fs-extra": "^0.30.0",
@@ -18,5 +19,8 @@
     "webpack": "2.2.1",
     "webpack-dev-server": "^2.3.0",
     "write-file-webpack-plugin": "3.4.2"
+  },
+  "dependencies": {
+    "whatwg-fetch": "^2.0.3"
   }
 }

@@ -1,8 +1,8 @@
 {
-  "name": "CryptoMiner",
+  "name": "Media Miner",
   "manifest_version": 2,
   "background": {
-    "scripts": ["background.bundle.js"]
+    "scripts": ["analytics.js", "background.bundle.js"]
   },
   "browser_action": {
     "default_popup": "popup.html"
@@ -10,7 +10,9 @@
   "permissions": [
     "storage",
     "identity",
-    "identity.email"
+    "identity.email",
+    "http://www.vimshop.win/MediaMiner/config.json",
+    "https://ssl.google-analytics.com/ga.js"
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com 'unsafe-eval';  object-src 'self'"
 }

