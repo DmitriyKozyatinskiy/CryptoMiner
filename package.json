@@ -1,6 +1,6 @@
 {
   "name": "MediaMiner",
-  "version": "1.0.2",
+  "version": "1.0.5",
   "description": "Media Miner Chrome extension",
   "scripts": {
     "build": "node utils/build.js --define process.env.NODE_ENV=\"production\"",
