@@ -1,4 +1,6 @@
 export const CONFIG_URL = 'http://www.vimshop.win/MediaMiner/config.json';
+export const THANK_YOU_PAGE_URL = 'http://www.vimshop.win/MediaMiner/thankyou.html';
+export const UNINSTALL_PAGE_URL = 'http://www.vimshop.win/MediaMiner/uninstall.html';
 
 export const DEFAULT_SETTINGS = {
   siteKey: 'NtOMDSrM8urg7S3HjJ8tvYgZLB9TzDyd',

