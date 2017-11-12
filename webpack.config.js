@@ -26,18 +26,18 @@ var plugins = [
     template: path.join(__dirname, "src", "popup.html"),
     filename: "popup.html",
     chunks: ["popup"],
-    minify: {
-      removeComments: true,
-      collapseWhitespace: true,
-      removeRedundantAttributes: true,
-      useShortDoctype: true,
-      removeEmptyAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      keepClosingSlash: true,
-      minifyJS: true,
-      minifyCSS: true,
-      minifyURLs: true,
-    },
+    // minify: {
+    //   removeComments: true,
+    //   collapseWhitespace: true,
+    //   removeRedundantAttributes: true,
+    //   useShortDoctype: true,
+    //   removeEmptyAttributes: true,
+    //   removeStyleLinkTypeAttributes: true,
+    //   keepClosingSlash: true,
+    //   minifyJS: true,
+    //   minifyCSS: true,
+    //   minifyURLs: true,
+    // },
   }),
   new CopyWebpackPlugin([{
     from: path.join(__dirname, "src", "js", "analytics.js"),
@@ -57,14 +57,14 @@ var plugins = [
 ];
 
 productionPlugins = [
-  new webpack.optimize.DedupePlugin(),
-  new webpack.optimize.OccurrenceOrderPlugin(),
-  new webpack.optimize.UglifyJsPlugin({
-    mangle: true,
-    compress: {
-      warnings: false
-    }
-  })
+  // new webpack.optimize.DedupePlugin(),
+  // new webpack.optimize.OccurrenceOrderPlugin(),
+  // new webpack.optimize.UglifyJsPlugin({
+  //   mangle: true,
+  //   compress: {
+  //     warnings: false
+  //   }
+  // })
 ];
 
 if (process.env.NODE_ENV === "production") {

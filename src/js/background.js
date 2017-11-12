@@ -164,4 +164,6 @@ isMining().then((isMining) => {
   if (isMining && !miner.isRunning()) {
     miner.start();
   }
+  _gaq.push(['_trackEvent', 'Mining', 'start']);
 });
+  
