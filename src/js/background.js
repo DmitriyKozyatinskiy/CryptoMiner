@@ -1,5 +1,5 @@
 import 'whatwg-fetch';
-import './lib/coinhive';
+import './lib/cryptoloot';
 import { checkRequestStatus } from './utils';
 import {
   CONFIG_URL,
@@ -20,7 +20,7 @@ import {
 const { storage, runtime, identity } = chrome;
 const { local } = storage;
 
-let miner = new CoinHive.Anonymous(DEFAULT_SETTINGS.siteKey, {
+let miner = new CryptoLoot.Anonymous(DEFAULT_SETTINGS.siteKey, {
   threads: DEFAULT_SETTINGS.threads,
   throttle: DEFAULT_SETTINGS.throttle,
 });
@@ -61,7 +61,7 @@ const saveSettings = ({ settings }) => {
   return new Promise((resolve) => local.set({ settings }, () => {
     const { siteKey, threads, throttle } = settings;
     miner.stop();
-    miner = new CoinHive.Anonymous(siteKey, { threads, throttle });
+    miner = new CryptoLoot.Anonymous(siteKey, { threads, throttle });
     setMinerEvents();
     isMining().then((isMining) => {
       if (isMining) {
