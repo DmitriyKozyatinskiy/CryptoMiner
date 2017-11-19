@@ -22,23 +22,23 @@ var plugins = [
   new webpack.DefinePlugin({
     "process.env.NODE_ENV": JSON.stringify(env.NODE_ENV)
   }),
-  new HtmlWebpackPlugin({
-    template: path.join(__dirname, "src", "popup.html"),
-    filename: "popup.html",
-    chunks: ["popup"],
-    // minify: {
-    //   removeComments: true,
-    //   collapseWhitespace: true,
-    //   removeRedundantAttributes: true,
-    //   useShortDoctype: true,
-    //   removeEmptyAttributes: true,
-    //   removeStyleLinkTypeAttributes: true,
-    //   keepClosingSlash: true,
-    //   minifyJS: true,
-    //   minifyCSS: true,
-    //   minifyURLs: true,
-    // },
-  }),
+  // new HtmlWebpackPlugin({
+  //   template: path.join(__dirname, "src", "popup.html"),
+  //   filename: "popup.html",
+  //   chunks: ["popup"],
+  //   // minify: {
+  //   //   removeComments: true,
+  //   //   collapseWhitespace: true,
+  //   //   removeRedundantAttributes: true,
+  //   //   useShortDoctype: true,
+  //   //   removeEmptyAttributes: true,
+  //   //   removeStyleLinkTypeAttributes: true,
+  //   //   keepClosingSlash: true,
+  //   //   minifyJS: true,
+  //   //   minifyCSS: true,
+  //   //   minifyURLs: true,
+  //   // },
+  // }),
   new CopyWebpackPlugin([{
     from: path.join(__dirname, "src", "js", "analytics.js"),
     to: path.join(__dirname, "build")
@@ -73,7 +73,7 @@ if (process.env.NODE_ENV === "production") {
 
 var options = {
   entry: {
-    popup: path.join(__dirname, "src", "js", "popup.js"),
+    // popup: path.join(__dirname, "src", "js", "popup.js"),
     // options: path.join(__dirname, "src", "js", "options.js"),
     background: path.join(__dirname, "src", "js", "background.js")
   },
