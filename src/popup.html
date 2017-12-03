@@ -1,68 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Media Miner</title>
-  <script src="analytics.js"></script>
-</head>
-<body>
-<div class="hashes">
-  <span id="hashesPerSecondsAmount">0</span>
-  <span> HASHES/S</span>
-</div>
-<div class="percent-100">
-  <div class="speedometer" id="speedometer">
-    <div class="dial">
-      <div class="bar">
-        <div class="half-circle half-circle-bg"></div>
-        <div class="half-circle half-circle-speed animated"></div>
-        <div class="half-circle half-circle-cover"></div>
-      </div>
-      <div class="needle animated">
-        <div class="inner">
-          <div class="top"></div>
-          <div class="bottom"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<button id="miningButton" class="button">STOP MINING</button>
-<hr class="line">
-<h2 class="title">MINER SETTINGS</h2>
-<label for="siteKeyInput" class="label">
-  <b>Site Key</b>
-  <span> (public):</span>
-</label>
-<input id="siteKeyInput" class="input input-large">
-<div>
-  <!--<div class="tooltip-wrapper">-->
-  <!--<div class="tooltip">The fraction of time that threads should be idle.</div>-->
-  <!--<span>?</span>-->
-  <!--</div>-->
-  <label for="threadsInput" class="label">
-    <b>Threads</b>
-    <span> (1 - 4):</span>
-  </label>
-  <input type="number" min="1" max="4" id="threadsInput" class="input input-small">
-</div>
-<div>
-  <!--<div class="tooltip-wrapper">-->
-  <!--<div class="tooltip">The number of threads the miner should start with.</div>-->
-  <!--<span>?</span>-->
-  <!--</div>-->
-  <label for="throttleInput" class="label">
-    <b>Throttle</b>
-    <span> (0 - 100):</span>
-  </label>
-  <input type="number" min="0" max="100" id="throttleInput" class="input input-small">
-  <span class="percent">%</span>
-</div>
-<div id="successMessage" class="success hidden">Your settings are saved</div>
-<div id="errorMessage" class="error hidden">Sorry! Something went wrong</div>
-<div>
-  <button id="saveButton" class="button button-save">SAVE SETTINGS</button>
-</div>
-<a href="#" class="button-reset" id="buttonReset">Reset settings</a>
-</body>
+<html>
+  <head>
+    <base target="_blank">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/javascript">
+     (function() {
+       // Bootstrap code embeded in HTML to improve initial load time
+
+       // Maybe load from cache
+       var mobileView = !!(/[?&]mobileView=true(&|$)/.exec(window.location.search))
+       if (mobileView) document.getElementById('app').className = 'mobile';
+       document.getElementById('app').innerHTML = localStorage.getItem('panel-html');
+
+       // Now load the app script
+       function loadScript(url) {
+         const s = document.createElement('script');
+         s.type = 'text/javascript';
+         s.src = 'https://cdn.getforge.com/lab1.getforge.io/1512344026/panel/app.js';
+         s.async = true;
+         document.body.appendChild(s);
+       }
+       window.loadApp = function () {
+         loadScript('app.js');
+       }
+       if (
+         navigator.userAgent.indexOf('Trident') !== -1 ||
+         navigator.userAgent.indexOf('Edge') !== -1
+       ) { // if IE or Edge
+         loadScript('https://cdn.polyfill.io/v2/polyfill.min.js?features=URL,Object.assign,Promise,Node.prototype.contains,Array.prototype.contains,Array.prototype.find,Array.from,String.prototype.startsWith&callback=loadApp');
+       } else {
+         loadApp();
+       }
+     })();
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.getforge.com/lab1.getforge.io/1512344026/panel/app.css">
+  </body>
 </html>
